@@ -63,3 +63,37 @@ func (j *Job) GetDetail(ctx context.Context, id string) (*entity.JobDetail, erro
 
 	return result, nil
 }
+
+func (j *Job) GetList(ctx context.Context, form *entity.JobListRequest) (*entity.JobList, error) {
+	url := j.Config.BaseURL + "/recruitment/positions.json"
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req = form.GenerateQueryParam(req)
+
+	fmt.Println("API", req.URL.String())
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return nil, errors.New("failed to call dans API")
+	}
+
+	resBody, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	result := new(entity.JobList)
+	err = json.Unmarshal(resBody, result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}

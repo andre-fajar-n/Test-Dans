@@ -2,7 +2,6 @@ package handler
 
 import (
 	"dans/entity"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -29,7 +28,20 @@ func (h *Job) GetDetail(c echo.Context) error {
 
 	result, err := h.userUsecase.GetDetail(c.Request().Context(), id)
 	if err != nil {
-		fmt.Println("HANDLER", err)
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, result)
+}
+
+func (h *Job) GetList(c echo.Context) error {
+	req := entity.JobListRequest{}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	result, err := h.userUsecase.GetList(c.Request().Context(), &req)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 

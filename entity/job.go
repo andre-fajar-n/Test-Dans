@@ -2,7 +2,7 @@ package entity
 
 import "context"
 
-// Request
+// Response
 type (
 	JobDetail struct {
 		ID          string `json:"id"`
@@ -17,15 +17,29 @@ type (
 		HowToApply  string `json:"how_to_apply"`
 		CompanyLogo string `json:"company_logo"`
 	}
+
+	JobList []*JobDetail
+)
+
+// Request
+type (
+	JobListRequest struct {
+		Description string `query:"description"`
+		Location    string `query:"location"`
+		FullTime    *bool  `query:"full_time"`
+		Page        int    `query:"page"`
+	}
 )
 
 // Interface
 type (
 	JobApi interface {
 		GetDetail(ctx context.Context, id string) (*JobDetail, error)
+		GetList(ctx context.Context, form *JobListRequest) (*JobList, error)
 	}
 
 	JobUsecase interface {
 		GetDetail(ctx context.Context, id string) (*JobDetail, error)
+		GetList(ctx context.Context, form *JobListRequest) (*JobList, error)
 	}
 )
