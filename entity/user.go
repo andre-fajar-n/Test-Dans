@@ -24,6 +24,7 @@ type (
 
 	UserUsecase interface {
 		Register(ctx context.Context, req *UserRegisterRequest) error
+		Login(ctx context.Context, req *UserLoginRequest) (*LoginResponse, error)
 	}
 )
 
@@ -32,5 +33,16 @@ type (
 	UserRegisterRequest struct {
 		Username string `validate:"required" json:"username"`
 		Password string `validate:"required" json:"password"`
+	}
+
+	UserLoginRequest struct {
+		UserRegisterRequest
+	}
+)
+
+type (
+	LoginResponse struct {
+		Token     string `json:"token"`
+		ExpiredAt string `json:"expired_at"`
 	}
 )

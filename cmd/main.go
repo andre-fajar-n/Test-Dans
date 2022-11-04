@@ -23,7 +23,7 @@ func main() {
 	userPostgre := postgre.NewUserPostgre(db)
 
 	// Usecase
-	userUsecase := usecase.NewUser(userPostgre)
+	userUsecase := usecase.NewUser(userPostgre, cfg)
 
 	// Handler
 	userHandler := handler.NewUser(userUsecase)
@@ -37,6 +37,7 @@ func main() {
 	v1 := e.Group("/v1")
 	{
 		v1.POST("/register", userHandler.Register)
+		v1.POST("/login", userHandler.Login)
 	}
 
 	if err := e.Start(":8080"); err != http.ErrServerClosed {
