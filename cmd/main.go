@@ -50,10 +50,10 @@ func main() {
 		v1.POST("/register", userHandler.Register)
 		v1.POST("/login", userHandler.Login)
 
-		// v1WithToken := v1.Group("/")
-		v1.Use(authMiddleware.RequiredToken)
-		v1.GET("/job", jobHandler.GetList)
-		// v1WithToken.GET("/job/:id", jobHandler.GetDetail)
+		v1WithToken := v1.Group("", authMiddleware.RequiredToken)
+		// v1.Use(authMiddleware.RequiredToken)
+		v1WithToken.GET("/job", jobHandler.GetList)
+		v1WithToken.GET("/job/:id", jobHandler.GetDetail)
 	}
 
 	if err := e.Start(":8080"); err != http.ErrServerClosed {
