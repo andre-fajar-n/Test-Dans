@@ -3,7 +3,7 @@ package main
 import (
 	"dans/env"
 	"dans/handler"
-	"dans/middleware"
+	"dans/pkg"
 	"dans/postgre"
 	"dans/thirdparty/dans"
 	"dans/usecase"
@@ -37,10 +37,14 @@ func main() {
 	jobHandler := handler.NewJob(jobUsecase)
 
 	// Middleware
-	authMiddleware := middleware.NewAuth(cfg)
+	configMiddleware := echomiddleware.JWTConfig{
+		Claims:     &pkg.Claims{},
+		SigningKey: []byte(cfg.Sub("app").GetString("secret_key")),
+	}
 
 	e := echo.New()
 	e.Use(echomiddleware.Logger())
+	e.Use(echomiddleware.Recover())
 	e.Logger.SetLevel(log.INFO)
 	e.Logger.SetLevel(log.INFO)
 
@@ -50,10 +54,9 @@ func main() {
 		v1.POST("/register", userHandler.Register)
 		v1.POST("/login", userHandler.Login)
 
-		v1WithToken := v1.Group("", authMiddleware.RequiredToken)
-		// v1.Use(authMiddleware.RequiredToken)
-		v1WithToken.GET("/job", jobHandler.GetList)
-		v1WithToken.GET("/job/:id", jobHandler.GetDetail)
+		v1Job := v1.Group("/job", echomiddleware.JWTWithConfig(configMiddleware))
+		v1Job.GET("", jobHandler.GetList)
+		v1Job.GET("/:id", jobHandler.GetDetail)
 	}
 
 	if err := e.Start(":8080"); err != http.ErrServerClosed {
