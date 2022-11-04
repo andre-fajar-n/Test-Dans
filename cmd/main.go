@@ -3,7 +3,7 @@ package main
 import (
 	"dans/env"
 	"dans/handler"
-	"dans/pkg"
+	"dans/middleware"
 	"dans/postgre"
 	"dans/thirdparty/dans"
 	"dans/usecase"
@@ -37,10 +37,7 @@ func main() {
 	jobHandler := handler.NewJob(jobUsecase)
 
 	// Middleware
-	configMiddleware := echomiddleware.JWTConfig{
-		Claims:     &pkg.Claims{},
-		SigningKey: []byte(cfg.Sub("app").GetString("secret_key")),
-	}
+	authMiddleware := middleware.NewAuth(cfg)
 
 	e := echo.New()
 	e.Use(echomiddleware.Logger())
@@ -54,7 +51,7 @@ func main() {
 		v1.POST("/register", userHandler.Register)
 		v1.POST("/login", userHandler.Login)
 
-		v1Job := v1.Group("/job", echomiddleware.JWTWithConfig(configMiddleware))
+		v1Job := v1.Group("/job", authMiddleware.RequiredToken())
 		v1Job.GET("", jobHandler.GetList)
 		v1Job.GET("/:id", jobHandler.GetDetail)
 	}
