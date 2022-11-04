@@ -1,0 +1,17 @@
+{
+    "postgre":{
+        "host":"host",
+        "user":"user",
+        "password":"password",
+        "db":"db",
+        "port":5432
+    },
+    "app":{
+        "secret_key":"secret_key"
+    },
+    "third_party":{
+        "dans":{
+            "base_url":"base_url"
+        }
+    }
+}

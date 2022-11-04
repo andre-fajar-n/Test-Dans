@@ -74,7 +74,6 @@ func (j *Job) GetList(ctx context.Context, form *entity.JobListRequest) (*entity
 
 	req = form.GenerateQueryParam(req)
 
-	fmt.Println("API", req.URL.String())
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
