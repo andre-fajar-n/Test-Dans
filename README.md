@@ -12,3 +12,4 @@
 4. Run the apps `go run ./cmd/main.go `
 
 # Postman Collection
+[postman](./Dans.postman_collection.json)
