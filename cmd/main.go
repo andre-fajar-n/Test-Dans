@@ -3,7 +3,9 @@ package main
 import (
 	"dans/env"
 	"dans/handler"
+	"dans/middleware"
 	"dans/postgre"
+	"dans/thirdparty/dans"
 	"dans/usecase"
 	"net/http"
 
@@ -22,11 +24,20 @@ func main() {
 	// Postgre
 	userPostgre := postgre.NewUserPostgre(db)
 
+	// Third Party
+	// Dans
+	dansJobApi := dans.NewJob(cfg)
+
 	// Usecase
 	userUsecase := usecase.NewUser(userPostgre, cfg)
+	jobUsecase := usecase.NewJob(dansJobApi)
 
 	// Handler
 	userHandler := handler.NewUser(userUsecase)
+	jobHandler := handler.NewJob(jobUsecase)
+
+	// Middleware
+	authMiddleware := middleware.NewAuth(cfg)
 
 	e := echo.New()
 	e.Use(echomiddleware.Logger())
@@ -38,6 +49,9 @@ func main() {
 	{
 		v1.POST("/register", userHandler.Register)
 		v1.POST("/login", userHandler.Login)
+
+		v1.Use(authMiddleware.RequiredToken)
+		v1.GET("/job/:id", jobHandler.GetDetail)
 	}
 
 	if err := e.Start(":8080"); err != http.ErrServerClosed {

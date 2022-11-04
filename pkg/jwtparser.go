@@ -1,19 +1,17 @@
-package jwtparser
+package pkg
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
 type Claims struct {
-	IssuedAt   int64  `json:"iat"`
-	Expiration int64  `json:"exp"`
-	Username   string `json:"username"`
+	jwt.StandardClaims
+	Username string `json:"username"`
 }
 
-func ValidateToken(t string, secret string) (claims Claims, err error) {
+func ValidateToken(t string, secret string) (claims jwt.MapClaims, err error) {
 	// Parse jwt token
 	token, err := jwt.ParseWithClaims(
 		t,
@@ -27,20 +25,4 @@ func ValidateToken(t string, secret string) (claims Claims, err error) {
 	}
 
 	return claims, nil
-}
-
-func (claims *Claims) Valid() error {
-	// check whether one of the claims is missing
-	if claims.Expiration == 0 || claims.Username == "" {
-		return fmt.Errorf("missing jwt fields")
-	}
-
-	// check whether the token is expired or not.
-	now := time.Now()
-	exp := time.Unix(claims.Expiration, 0)
-	if now.After(exp) {
-		return fmt.Errorf("token is expired")
-	}
-
-	return nil
 }

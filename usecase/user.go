@@ -76,27 +76,26 @@ func (u *User) Login(ctx context.Context, req *entity.UserLoginRequest) (*entity
 		return nil, errors.New("invalid password")
 	}
 
-	expiredTime := time.Now().UTC()
-	token, err := u.CreateToken(ctx, req.Username, expiredTime)
+	now := time.Now().UTC()
+	token, err := u.CreateToken(ctx, req.Username, now)
 	if err != nil {
 		return nil, err
 	}
 
 	return &entity.LoginResponse{
 		Token:     token,
-		ExpiredAt: expiredTime.Format(time.RFC3339),
+		ExpiredAt: now.Add(1 * time.Hour).Format(time.RFC3339),
 	}, nil
 }
 
-func (u *User) CreateToken(ctx context.Context, username string, expiredTime time.Time) (string, error) {
+func (u *User) CreateToken(ctx context.Context, username string, now time.Time) (string, error) {
 	// Create the token
 	token := jwt.New(jwt.GetSigningMethod(jwt.SigningMethodHS256.Name))
 
-	now := time.Now().Local()
 	token.Claims = jwt.MapClaims{
 		"username": username,
 		"iat":      now.Unix(),
-		"exp":      expiredTime.Unix(),
+		"exp":      now.Add(1 * time.Hour).Unix(),
 	}
 
 	// Sign and get the complete encoded token as a string
