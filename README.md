@@ -10,3 +10,5 @@
 2. Change some variable in `config.json` based on your settings
 3. Create new database
 4. Run the apps `go run ./cmd/main.go `
+
+# Postman Collection

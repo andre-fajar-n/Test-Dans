@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "917d7ab4-8a02-4f55-a4d5-d6ff6a6d916a",
+		"name": "Dans",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12588858"
+	},
+	"item": [
+		{
+			"name": "Third API",
+			"item": [
+				{
+					"name": "Job List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://dev3.dansmultipro.co.id/api/recruitment/positions.json?description=python&location=berlin&full_time=false&page=2",
+							"protocol": "http",
+							"host": [
+								"dev3",
+								"dansmultipro",
+								"co",
+								"id"
+							],
+							"path": [
+								"api",
+								"recruitment",
+								"positions.json"
+							],
+							"query": [
+								{
+									"key": "description",
+									"value": "python"
+								},
+								{
+									"key": "location",
+									"value": "berlin"
+								},
+								{
+									"key": "full_time",
+									"value": "false"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://dev3.dansmultipro.co.id/api/recruitment/positions/2e99bd71-9684-4182-bd59-28a634ec9dd7",
+							"protocol": "http",
+							"host": [
+								"dev3",
+								"dansmultipro",
+								"co",
+								"id"
+							],
+							"path": [
+								"api",
+								"recruitment",
+								"positions",
+								"2e99bd71-9684-4182-bd59-28a634ec9dd7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"andre\",\n    \"password\":\"andre\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"andre\",\n    \"password\":\"andre\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job Detail",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/job/2e99bd71-9684-4182-bd59-28a634ec9dd7",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"job",
+						"2e99bd71-9684-4182-bd59-28a634ec9dd7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Job List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Njc1NjczMzcsImlhdCI6MTY2NzU2MzczNywidXNlcm5hbWUiOiJhbmRyZSJ9.6cpMP8f9kd6RrSg79_-g_8iW4E5QImJd5-d6zgdXL9U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/job?page=2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"job"
+					],
+					"query": [
+						{
+							"key": "description",
+							"value": "python",
+							"disabled": true
+						},
+						{
+							"key": "location",
+							"value": "berlin",
+							"disabled": true
+						},
+						{
+							"key": "full_time",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
